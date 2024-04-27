@@ -16,33 +16,40 @@ Crie um repositório no github, faça commit e push para este repositório e ent
 """
 
 class Categoria:
-    def __init__(self):
+    def __init__(self, nome):
         self.id = None
-        self.nome = str()
+        self.nome = nome
+        
+    @property
+    def nome(self):
+        return self.nome
+    
+    @nome.setter
+    def nome(self, newnome):
+        self.nome = newnome
+        
+    def __str__(self):
+        return f'{self.nome}'
 
 class Produto(ABC):
-    def __init__(self, modelo, cor, preco, categoria):
+    def __init__(self, modelo, cor, preco):
         super().__init__()
-        self.modelo = modelo
-        self.cor = cor
-        self.preco = preco
-        self.categoria = categoria
+        self.modelo = str(modelo)
+        self.cor = str(cor)
+        self.preco = float(preco)
+        self.categoria = None
 
     @abstractmethod
     def getInformacoes(self):
         return f"Informações:\nModelo - {self.modelo}\nCor - {self.cor}\nPreco - {self.preco}\nCategoria - {self.categoria}\n"
 
     @abstractmethod
-    def cadastrar(self, newModelo, newCor, newPreco, newCategoria):
-        self.modelo = newModelo
-        self.cor = newCor
-        self.preco = newPreco
-        self.categoria = newCategoria
-
+    def cadastrar(self):
+        pass
     
 class Desktop(Produto):
-    def __init__(self, modelo, cor, preco, categoria, potenciaDaFonte):
-        super().__init__(modelo, cor, preco, categoria)
+    def __init__(self, modelo, cor, preco, potenciaDaFonte):
+        super().__init__(modelo, cor, preco)
         self._potenciaDaFonte = potenciaDaFonte
 
     @property
@@ -54,11 +61,15 @@ class Desktop(Produto):
         self._potenciaDaFonte = newPotencia
 
     def getInformacoes(self):
-        return super().getInformacoes() +"Potencia da Fonte - "+ self.potenciaDaFonte
+        return super().getInformacoes() + f"Potencia da Fonte - {self._potenciaDaFonte}" 
+    
+    def cadastrar(self, categoria):
+        self.categoria = categoria
+    
 
 class Notebook(Produto):
-    def __init__(self, modelo, cor, preco, categoria, tempoDeBateria):
-        super().__init__(modelo, cor, preco, categoria)
+    def __init__(self, modelo, cor, preco, tempoDeBateria):
+        super().__init__(modelo, cor, preco)
         self.__tempoDeBateria = tempoDeBateria
 
     @property
@@ -70,8 +81,8 @@ class Notebook(Produto):
         self.__tempoDeBateria = newTempoDeBateria
 
     def getInformacoes(self):
-        return super().getInformacoes() +"Tempo de Bateria - " + self.tempoDeBateria
+        return super().getInformacoes() + f"Tempo de Bateria - {self.__tempoDeBateria}"
+    def cadastrar(self, categoria):
+        self.categoria = categoria
     
-    
-
     
